@@ -46,11 +46,20 @@ head(large_primates)
 
 view(msleep)
 
+data()
+head(diamonds)
+names(diamonds)
+view(diamonds)
+ggplot(diamonds, aes(x = carat, y = price)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  ylim(0, max(diamonds$price))
 
-
-
-
-
-
-
+head(cars)
+names(cars)
+view(cars)
+ggplot(cars, aes(x = carat, y = price)) +
+  geom_point() +
+  stat_smooth(method = lm) +
+  ylim(0, max(cars$price))
 
