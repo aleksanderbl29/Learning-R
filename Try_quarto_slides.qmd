@@ -1,0 +1,35 @@
+---
+title: "Slides"
+format: 
+  revealjs:
+    incremental: true
+---
+
+## Datagrundlag
+
+```{r echo=FALSE}
+library(tidyverse)
+```
+
+```{r}
+pop <- population
+names(pop)
+head(pop)
+```
+
+## Udvikling pr land
+
+```{r}
+pop <- population
+ggplot(pop, aes(x = year)) +
+  geom_point(aes(y = population)) +
+  facet_grid(.~country)
+```
+
+## Code
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
