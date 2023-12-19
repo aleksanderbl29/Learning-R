@@ -63,3 +63,7 @@ ggplot(cars, aes(x = carat, y = price)) +
   stat_smooth(method = lm) +
   ylim(0, max(cars$price))
 
+
+head(cars)
+
+
