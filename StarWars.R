@@ -1,5 +1,4 @@
 ## Session 1
-install.packages("tidyverse")
 library(tidyverse)
 sw <- starwars %>% 
   select(name, height, mass) %>% 
@@ -52,8 +51,10 @@ names(diamonds)
 view(diamonds)
 ggplot(diamonds, aes(x = carat, y = price)) +
   geom_point() +
-  stat_smooth(method = lm) +
-  ylim(0, max(diamonds$price))
+  geom_smooth(method = lm) +
+  ylim(0, max(diamonds$price)) +
+  epinion_fill(palette = "main")
+  
 
 head(cars)
 names(cars)
