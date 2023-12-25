@@ -1,0 +1,44 @@
+---
+title: "test citation"
+format: pdf
+editor: source
+csl: politica-w-ibid.csl
+bibliography: references.bib
+link-bibliography: false
+mainfont: Calibri
+toc: false
+toc-depth: 3
+toc-title: "Indholdsfortegnelse"
+lof: false
+lot: false
+number-sections: true
+number-depth: 2
+papersize: a4
+linestretch: 1.5
+fontsize: 11pt
+---
+
+# Quarto
+
+Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+
+@green-pedersen2023
+
+# Her er der noget tekst
+
+Stubager skriver bla bla bla bla
+
+her er en henvisning i teksten til @breetz2018 som også siger noget
+
+der er også hende her kolodny der siger noget på side et eller andet [@kolodny2022]
+
+@wlezien1997
+
+Jeg prøver lige den her @kolodny2022
+
+{{< pagebreak >}}
+
+# Litteraturliste
+
+::: {#refs}
+:::
