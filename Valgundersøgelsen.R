@@ -11,6 +11,7 @@ head(import_dnes19)
 # import_dnes19 %>% 
 #   tbl_summary()
 
+# Init and test -----------------------------------------------------------
 init_model <- lm(import_dnes19)
 
 dnes19 <- import_dnes19 %>% 
@@ -45,3 +46,14 @@ dnes19 %>%
 
 RColorBrewer::display.brewer.all()
 
+
+# Fig. 2.3 Danish Voter's Agenda (1971-2019) ------------------------------
+
+import_cont_dnes <-read_csv("Data/DNES CONT.csv")
+colnames(import_cont_dnes)
+
+v194 <-import_cont_dnes %>% 
+  select(v194)
+view(v194)
+
+glimpse(kontinuitetsfil_1971_2019_27april2021)
