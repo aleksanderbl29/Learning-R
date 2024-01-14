@@ -12,108 +12,108 @@ df_n <- 1200
 id <- seq(1, df_n, by = 1)
 
 ## Define treatments
-K1 <- "Ufaglært"
-K2 <- "Advokat"
-Econ_0 <- "Ingen policy"
-Econ_1 <- "Bedre vilkår for arbejderklassen"
+k1 <- "Ufaglært"
+k2 <- "Advokat"
+econ_0 <- "Ingen policy"
+econ_1 <- "Bedre vilkår for arbejderklassen"
 
 ## Add treatments
-create_df <- id %>%
-  tibble(id) %>% 
-  mutate(econ_pol = as.factor(sample(c(Econ_0, Econ_1),
+init_df <- id %>%
+  tibble(id) %>%
+  mutate(econ_pol = as.factor(sample(c(econ_0, econ_1),
                                      as.numeric(length(id)), replace = TRUE)),
-         job = as.factor(sample(c(K1, K2),
-                                as.numeric(length(id)), replace = TRUE))) %>% 
-  mutate(dummy_k = if_else(job == K2, 1, 0),
-         dummy_econ = if_else(econ_pol == Econ_0, 0, 1)) %>% 
+         job = as.factor(sample(c(k1, k2),
+                                as.numeric(length(id)), replace = TRUE))) %>%
+  mutate(dummy_k = if_else(job == k2, 1, 0),
+         dummy_econ = if_else(econ_pol == econ_0, 0, 1)) %>%
   mutate(treatment = factor(paste(job, "og", econ_pol)))
 
 ## Change levels
-create_df$econ_pol <- fct_rev(create_df$econ_pol)
-levels(create_df$econ_pol)
-create_df$job <- fct_rev(create_df$job)
-levels(create_df$job)
+init_df$econ_pol <- fct_rev(init_df$econ_pol)
+levels(init_df$econ_pol)
+init_df$job <- fct_rev(init_df$job)
+levels(init_df$job)
 
 
-head(create_df)
-summary(create_df)
-table(create_df$job, create_df$econ_pol)
+head(init_df)
+summary(init_df)
+table(init_df$job, init_df$econ_pol)
 
 ## Specify treatment groups
-T1 <- paste(K1, "og", Econ_0)
-T2 <- paste(K2, "og", Econ_0)
-T3 <- paste(K1, "og", Econ_1)
-T4 <- paste(K2, "og", Econ_1)
+t1 <- paste(k1, "og", econ_0)
+t2 <- paste(k2, "og", econ_0)
+t3 <- paste(k1, "og", econ_1)
+t4 <- paste(k2, "og", econ_1)
 
 ## Add dependent variable
-head(create_df)
-unique(create_df$treatment)
+head(init_df)
+unique(init_df$treatment)
 
 ## Specify dependent variable options
 dep_label <- c("Ingen sympati", "Næsten ingen sympati", "Indifferent", "Sympati for", "Stor sympati for")
 
 ## Define probalities for treatment groups
-T1_prob <- c(0.05, 0.30, 0.3, 0.25, 0.1)
-T2_prob <- c(0.08, 0.15, 0.35, 0.28, 0.14)
-T3_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
-T4_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
-paste(sum(T1_prob), "    ", mean(T1_prob))
-paste(sum(T2_prob), "    ", mean(T2_prob))
-paste(sum(T3_prob), "    ", mean(T3_prob))
-paste(sum(T4_prob), "    ", mean(T4_prob))
+t1_prob <- c(0.05, 0.30, 0.3, 0.25, 0.1)
+t2_prob <- c(0.08, 0.15, 0.35, 0.28, 0.14)
+t3_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
+t4_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
+paste(sum(t1_prob), "    ", mean(t1_prob))
+paste(sum(t2_prob), "    ", mean(t2_prob))
+paste(sum(t3_prob), "    ", mean(t3_prob))
+paste(sum(t4_prob), "    ", mean(t4_prob))
 
 ## Assign dependent variables
-df_rand_sample <- create_df %>% 
-  mutate(sympati = ifelse(treatment == T1, sample(-2:2, df_n, replace = TRUE, prob = T1_prob),
-                          ifelse(treatment == T2, sample(-2:2, df_n, replace = TRUE, prob = T2_prob), 
-                                 ifelse(treatment == T3, sample(-2:2, df_n, replace = TRUE, prob = T3_prob),
-                                        ifelse(treatment == T4, sample(-2:2, df_n, replace = TRUE, prob = T4_prob), NA)))))
+df_rand_sample <- init_df %>%
+  mutate(sympati = ifelse(treatment == t1, sample(-2:2, df_n, replace = TRUE, prob = t1_prob),
+                          ifelse(treatment == t2, sample(-2:2, df_n, replace = TRUE, prob = t2_prob),
+                                 ifelse(treatment == t3, sample(-2:2, df_n, replace = TRUE, prob = t3_prob),
+                                        ifelse(treatment == t4, sample(-2:2, df_n, replace = TRUE, prob = t4_prob), NA)))))
 
-T1_df <- create_df[create_df$treatment == T1, ]
-T2_df <- create_df[create_df$treatment == T2, ]
-T3_df <- create_df[create_df$treatment == T3, ]
-T4_df <- create_df[create_df$treatment == T4, ]
+t1_df <- init_df[init_df$treatment == t1, ]
+t2_df <- init_df[init_df$treatment == t2, ]
+t3_df <- init_df[init_df$treatment == t3, ]
+t4_df <- init_df[init_df$treatment == t4, ]
 
 ## Assign values for each df
-T1_df <- T1_df %>% 
-  mutate(df_id = seq(1, length(id), by = 1)) %>% 
-  mutate(sympati = ifelse(df_id <= T1_prob[1] * length(df_id), -2,
-                          ifelse(df_id <= (T1_prob[2] * length(df_id)) + (T1_prob[1] * length(df_id)), -1,
-                                 ifelse(df_id <= (T1_prob[3] * length(df_id)) + (T1_prob[2] * length(df_id)) + (T1_prob[1] * length(df_id)), 0,
-                                        ifelse(df_id <= (T1_prob[4] * length(df_id)) + (T1_prob[3] * length(df_id)) + (T1_prob[2] * length(df_id)) + (T1_prob[1] * length(df_id)), 1,
-                                               ifelse(df_id <= (T1_prob[5] * length(df_id)) + (T1_prob[4] * length(df_id)) + (T1_prob[3] * length(df_id)) + (T1_prob[2] * length(df_id)) + (T1_prob[1] * length(df_id)), 2, NA))))))
-T2_df <- T2_df %>% 
-  mutate(df_id = seq(1, length(id), by = 1)) %>% 
-  mutate(sympati = ifelse(df_id <= T2_prob[1] * length(df_id), -2,
-                          ifelse(df_id <= (T2_prob[2] * length(df_id)) + (T2_prob[1] * length(df_id)), -1,
-                                 ifelse(df_id <= (T2_prob[3] * length(df_id)) + (T2_prob[2] * length(df_id)) + (T2_prob[1] * length(df_id)), 0,
-                                        ifelse(df_id <= (T2_prob[4] * length(df_id)) + (T2_prob[3] * length(df_id)) + (T2_prob[2] * length(df_id)) + (T2_prob[1] * length(df_id)), 1,
-                                               ifelse(df_id <= (T2_prob[5] * length(df_id)) + (T2_prob[4] * length(df_id)) + (T2_prob[3] * length(df_id)) + (T2_prob[2] * length(df_id)) + (T2_prob[1] * length(df_id)), 2, NA))))))
-T3_df <- T3_df %>% 
-  mutate(df_id = seq(1, length(id), by = 1)) %>% 
-  mutate(sympati = ifelse(df_id <= T3_prob[1] * length(df_id), -2,
-                          ifelse(df_id <= (T3_prob[2] * length(df_id)) + (T3_prob[1] * length(df_id)), -1,
-                                 ifelse(df_id <= (T3_prob[3] * length(df_id)) + (T3_prob[2] * length(df_id)) + (T3_prob[1] * length(df_id)), 0,
-                                        ifelse(df_id <= (T3_prob[4] * length(df_id)) + (T3_prob[3] * length(df_id)) + (T3_prob[2] * length(df_id)) + (T3_prob[1] * length(df_id)), 1,
-                                               ifelse(df_id <= (T3_prob[5] * length(df_id)) + (T3_prob[4] * length(df_id)) + (T3_prob[3] * length(df_id)) + (T3_prob[2] * length(df_id)) + (T3_prob[1] * length(df_id)), 2, NA))))))
-T4_df <- T4_df %>% 
-  mutate(df_id = seq(1, length(id), by = 1)) %>% 
-  mutate(sympati = ifelse(df_id <= T4_prob[1] * length(df_id), -2,
-                          ifelse(df_id <= (T4_prob[2] * length(df_id)) + (T4_prob[1] * length(df_id)), -1,
-                                 ifelse(df_id <= (T4_prob[3] * length(df_id)) + (T4_prob[2] * length(df_id)) + (T4_prob[1] * length(df_id)), 0,
-                                        ifelse(df_id <= (T4_prob[4] * length(df_id)) + (T4_prob[3] * length(df_id)) + (T4_prob[2] * length(df_id)) + (T4_prob[1] * length(df_id)), 1,
-                                               ifelse(df_id <= (T4_prob[5] * length(df_id)) + (T4_prob[4] * length(df_id)) + (T4_prob[3] * length(df_id)) + (T4_prob[2] * length(df_id)) + (T4_prob[1] * length(df_id)), 2, NA))))))
+t1_df <- t1_df %>%
+  mutate(df_id = seq(1, length(id), by = 1)) %>%
+  mutate(sympati = ifelse(df_id <= t1_prob[1] * length(df_id), -2,
+                          ifelse(df_id <= (t1_prob[2] * length(df_id)) + (t1_prob[1] * length(df_id)), -1,
+                                 ifelse(df_id <= (t1_prob[3] * length(df_id)) + (t1_prob[2] * length(df_id)) + (t1_prob[1] * length(df_id)), 0,
+                                        ifelse(df_id <= (t1_prob[4] * length(df_id)) + (t1_prob[3] * length(df_id)) + (t1_prob[2] * length(df_id)) + (t1_prob[1] * length(df_id)), 1,
+                                               ifelse(df_id <= (t1_prob[5] * length(df_id)) + (t1_prob[4] * length(df_id)) + (t1_prob[3] * length(df_id)) + (t1_prob[2] * length(df_id)) + (t1_prob[1] * length(df_id)), 2, NA))))))
+t2_df <- t2_df %>%
+  mutate(df_id = seq(1, length(id), by = 1)) %>%
+  mutate(sympati = ifelse(df_id <= t2_prob[1] * length(df_id), -2,
+                          ifelse(df_id <= (t2_prob[2] * length(df_id)) + (t2_prob[1] * length(df_id)), -1,
+                                 ifelse(df_id <= (t2_prob[3] * length(df_id)) + (t2_prob[2] * length(df_id)) + (t2_prob[1] * length(df_id)), 0,
+                                        ifelse(df_id <= (t2_prob[4] * length(df_id)) + (t2_prob[3] * length(df_id)) + (t2_prob[2] * length(df_id)) + (t2_prob[1] * length(df_id)), 1,
+                                               ifelse(df_id <= (t2_prob[5] * length(df_id)) + (t2_prob[4] * length(df_id)) + (t2_prob[3] * length(df_id)) + (t2_prob[2] * length(df_id)) + (t2_prob[1] * length(df_id)), 2, NA))))))
+t3_df <- t3_df %>%
+  mutate(df_id = seq(1, length(id), by = 1)) %>%
+  mutate(sympati = ifelse(df_id <= t3_prob[1] * length(df_id), -2,
+                          ifelse(df_id <= (t3_prob[2] * length(df_id)) + (t3_prob[1] * length(df_id)), -1,
+                                 ifelse(df_id <= (t3_prob[3] * length(df_id)) + (t3_prob[2] * length(df_id)) + (t3_prob[1] * length(df_id)), 0,
+                                        ifelse(df_id <= (t3_prob[4] * length(df_id)) + (t3_prob[3] * length(df_id)) + (t3_prob[2] * length(df_id)) + (t3_prob[1] * length(df_id)), 1,
+                                               ifelse(df_id <= (t3_prob[5] * length(df_id)) + (t3_prob[4] * length(df_id)) + (t3_prob[3] * length(df_id)) + (t3_prob[2] * length(df_id)) + (t3_prob[1] * length(df_id)), 2, NA))))))
+t4_df <- t4_df %>%
+  mutate(df_id = seq(1, length(id), by = 1)) %>%
+  mutate(sympati = ifelse(df_id <= t4_prob[1] * length(df_id), -2,
+                          ifelse(df_id <= (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), -1,
+                                 ifelse(df_id <= (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 0,
+                                        ifelse(df_id <= (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 1,
+                                               ifelse(df_id <= (t4_prob[5] * length(df_id)) + (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 2, NA))))))
 
-# T1_df %>% ggplot(aes(x = sympati)) + geom_histogram()
-# T2_df %>% ggplot(aes(x = sympati)) + geom_histogram()
-# T3_df %>% ggplot(aes(x = sympati)) + geom_histogram()
-# T4_df %>% ggplot(aes(x = sympati)) + geom_histogram()
+# t1_df %>% ggplot(aes(x = sympati)) + geom_histogram()
+# t2_df %>% ggplot(aes(x = sympati)) + geom_histogram()
+# t3_df %>% ggplot(aes(x = sympati)) + geom_histogram()
+# t4_df %>% ggplot(aes(x = sympati)) + geom_histogram()
 ## Bind dfs together
-T1_ncol <- ncol(T1_df)
-T2_ncol <- ncol(T2_df)
-T3_ncol <- ncol(T3_df)
-T4_ncol <- ncol(T4_df)
-surveydata <- rbind(T1_df, T2_df, T3_df, T4_df)
+t1_ncol <- ncol(t1_df)
+t2_ncol <- ncol(t2_df)
+t3_ncol <- ncol(t3_df)
+t4_ncol <- ncol(t4_df)
+surveydata <- rbind(t1_df, t2_df, t3_df, t4_df)
 
 ## Define min and max for treatment variable for use in plots
 tr_min <- min(surveydata$sympati) - 1
