@@ -139,7 +139,7 @@ experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   facet_grid(econ_pol~job) +
   scale_y_continuous(labels = percent) +
   scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
-  labs(subtitle = "Eksperiment") +
+  labs(subtitle = "Eksperiment", y = "", x) +
   theme_bw() +
   theme(legend.position = "none") +
   theme(text = element_text(size = 20))
@@ -153,7 +153,7 @@ control_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   xlim(0, 6) +
   scale_y_continuous(labels = percent) +
   scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
-  labs(subtitle = "Kontrolgruppe") +
+  labs(subtitle = "Kontrolgruppe", y = "", x = "") +
   theme_bw() +
   theme(legend.position = "none") +
   theme(text = element_text(size = 20))
@@ -164,7 +164,10 @@ mean(t3_df$sympati)
 mean(t4_df$sympati)
 mean(surveydata$sympati)
 
-plot_grid(control_plot, experiment_plot)
+grid <- plot_grid(control_plot, experiment_plot)
+grid
+
+ggdraw(add_sub(grid, "Sympati", vpadding = grid::unit(0,"lines"), y = 6, x = 0.5, vjust = 4.5))
 ggsave(filename = "./private/graph.png", dpi = "print", width = 15, height = 7.5)
 
 # boxgraph <- surveydata %>% mutate(sympati = sympati + 3) %>% 
