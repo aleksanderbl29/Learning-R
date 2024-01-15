@@ -139,7 +139,7 @@ experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   facet_grid(econ_pol~job) +
   scale_y_continuous(labels = percent) +
   scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
-  labs(subtitle = "Eksperiment", x = "Sympati", y = "Procent") +
+  labs(subtitle = "Eksperiment", x = "Sympati") +
   theme_bw() +
   theme(legend.position = "none") +
   theme(text = element_text(size = 20))
@@ -153,7 +153,7 @@ control_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   xlim(0, 6) +
   scale_y_continuous(labels = percent) +
   scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
-  labs(subtitle = "Kontrolgruppe", x = "Sympati", y = "Procent") +
+  labs(subtitle = "Kontrolgruppe", x = "Sympati") +
   theme_bw() +
   theme(legend.position = "none") +
   theme(text = element_text(size = 20))
