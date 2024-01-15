@@ -1,6 +1,7 @@
 library(tidyverse)
 library(ggthemes)
 library(scales) # Nødvendigt for at få procent på y akse i bar plot
+library(cowplot)
 
 ## Specify numeric output
 options(scipen = 999)
@@ -13,9 +14,9 @@ id <- seq(1, df_n, by = 1)
 
 ## Define treatments
 k1 <- "Ufaglært"
-k2 <- "Advokat"
+k2 <- "Revisor"
 econ_0 <- "Ingen policy"
-econ_1 <- "Bedre vilkår for arbejderklassen"
+econ_1 <- "Skattelettelse"
 
 ## Add treatments
 init_df <- id %>%
@@ -29,7 +30,7 @@ init_df <- id %>%
   mutate(treatment = factor(paste(job, "og", econ_pol)))
 
 ## Change levels
-init_df$econ_pol <- fct_rev(init_df$econ_pol)
+# init_df$econ_pol <- fct_rev(init_df$econ_pol)
 levels(init_df$econ_pol)
 init_df$job <- fct_rev(init_df$job)
 levels(init_df$job)
@@ -53,14 +54,17 @@ unique(init_df$treatment)
 dep_label <- c("Ingen sympati", "Næsten ingen sympati", "Indifferent", "Sympati for", "Stor sympati for")
 
 ## Define probalities for treatment groups
-t1_prob <- c(0.05, 0.30, 0.3, 0.25, 0.1)
-t2_prob <- c(0.08, 0.15, 0.35, 0.28, 0.14)
-t3_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
-t4_prob <- c(0.05, 0.15, 0.36, 0.29, 0.15)
+t1_prob <- c(0.08, 0.24, 0.3, 0.28, 0.1)
+t2_prob <- c(0.08, 0.15, 0.38, 0.25, 0.14)
+t3_prob <- c(0.05, 0.20, 0.33, 0.27, 0.15)
+t4_prob <- c(0.05, 0.205, 0.34, 0.27, 0.145)
 paste(sum(t1_prob), "    ", mean(t1_prob))
 paste(sum(t2_prob), "    ", mean(t2_prob))
 paste(sum(t3_prob), "    ", mean(t3_prob))
 paste(sum(t4_prob), "    ", mean(t4_prob))
+
+
+t4_prob - t2_prob
 
 ## Assign dependent variables
 df_rand_sample <- init_df %>%
@@ -104,6 +108,14 @@ t4_df <- t4_df %>%
                                         ifelse(df_id <= (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 1,
                                                ifelse(df_id <= (t4_prob[5] * length(df_id)) + (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 2, NA))))))
 
+
+control_df <- t4_df %>%
+  mutate(df_id = seq(1, length(id), by = 1)) %>%
+  mutate(sympati = ifelse(df_id <= t4_prob[1] * length(df_id), -2,
+                          ifelse(df_id <= (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), -1,
+                                 ifelse(df_id <= (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 0,
+                                        ifelse(df_id <= (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 1,
+                                               ifelse(df_id <= (t4_prob[5] * length(df_id)) + (t4_prob[4] * length(df_id)) + (t4_prob[3] * length(df_id)) + (t4_prob[2] * length(df_id)) + (t4_prob[1] * length(df_id)), 2, NA))))))
 # t1_df %>% ggplot(aes(x = sympati)) + geom_histogram()
 # t2_df %>% ggplot(aes(x = sympati)) + geom_histogram()
 # t3_df %>% ggplot(aes(x = sympati)) + geom_histogram()
@@ -119,10 +131,47 @@ surveydata <- rbind(t1_df, t2_df, t3_df, t4_df)
 tr_min <- min(surveydata$sympati) - 1
 tr_max <- max(surveydata$sympati) + 1
 
-surveydata %>% ggplot(aes(x = sympati)) +
+experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+  ggplot(aes(x = sympati)) +
   geom_bar(aes(fill = treatment, y = ((after_stat(count))/sum(after_stat(count)))*4)) +
-  xlim(tr_min, tr_max) +
+  xlim(0, 6) +
+  # xlim(tr_min, tr_max) +
   facet_grid(econ_pol~job) +
-  theme(legend.position = "none") +
   scale_y_continuous(labels = percent) +
-  labs(x = "Sympati for kandidat", y = "Procent")
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
+  labs(subtitle = "Eksperiment", x = "Sympati", y = "Procent") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  theme(text = element_text(size = 20))
+
+experiment_plot
+
+## Plot sympathy for control group
+control_plot <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+  ggplot(aes(x = sympati)) +
+  geom_bar(aes(y = ((after_stat(count))/sum(after_stat(count))))) +
+  xlim(0, 6) +
+  scale_y_continuous(labels = percent) +
+  scale_x_continuous(breaks = c(1, 2, 3, 4, 5))+
+  labs(subtitle = "Kontrolgruppe", x = "Sympati", y = "Procent") +
+  theme_bw() +
+  theme(legend.position = "none") +
+  theme(text = element_text(size = 20))
+
+mean(t1_df$sympati)
+mean(t2_df$sympati)
+mean(t3_df$sympati)
+mean(t4_df$sympati)
+mean(surveydata$sympati)
+
+plot_grid(control_plot, experiment_plot)
+ggsave(filename = "./private/graph.png", dpi = "print", width = 15, height = 7.5)
+
+# boxgraph <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+#   ggplot(aes(x = sympati, fill = treatment)) +
+#   geom_boxplot() +
+#   facet_grid(econ_pol~job) +
+#   labs(subtitle = "Kontrolgruppe", x = "Sympati") +
+#   theme(legend.position = "none")
+# boxgraph
+
