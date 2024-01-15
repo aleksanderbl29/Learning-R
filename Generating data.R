@@ -167,7 +167,7 @@ mean(surveydata$sympati)
 grid <- plot_grid(control_plot, experiment_plot)
 grid
 
-ggdraw(add_sub(grid, "Sympati", vpadding = grid::unit(0,"lines"), y = 6, x = 0.5, vjust = 4.5))
+# ggdraw(add_sub(grid, "Sympati", vpadding = grid::unit(0,"lines"), y = 6, x = 0.5, vjust = 4.5))
 ggsave(filename = "./private/graph.png", dpi = "print", width = 15, height = 7.5)
 
 # boxgraph <- surveydata %>% mutate(sympati = sympati + 3) %>% 
