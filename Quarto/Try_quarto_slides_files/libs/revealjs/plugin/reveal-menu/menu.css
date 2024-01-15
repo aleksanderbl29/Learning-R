@@ -234,7 +234,7 @@
 .slide-menu-wrapper .slide-menu-panel h4,
 .slide-menu-wrapper .slide-menu-panel h5,
 .slide-menu-wrapper .slide-menu-panel h6 {
-  margin: 20px 0 10px 0;
+  margin: 20px 0 10px;
   color: #fff;
   line-height: 1.2;
   letter-spacing: normal;
@@ -261,7 +261,7 @@
 }
 
 .slide-menu-wrapper .slide-menu-panel p {
-  margin: 10px 0 5px 0;
+  margin: 10px 0 5px;
 }
 
 .slide-menu-wrapper .slide-menu-panel a {
