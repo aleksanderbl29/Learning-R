@@ -79,8 +79,8 @@ t3_df <- init_df[init_df$treatment == t3, ]
 t4_df <- init_df[init_df$treatment == t4, ]
 
 assign_values <- function(tr_df, tr_prob){
-  tr_df <- tr_df %>% 
-    select(everything()) %>% 
+  tr_df <- tr_df %>%
+    select(everything()) %>%
     mutate(df_id = seq(1, length(id), by = 1)) %>%
     mutate(sympati = ifelse(df_id <= tr_prob[1] * length(df_id), -2,
                             ifelse(df_id <= (tr_prob[2] * length(df_id)) + (tr_prob[1] * length(df_id)), -1,
@@ -112,7 +112,7 @@ tr_min <- min(surveydata$sympati) - 1
 tr_min
 tr_max <- max(surveydata$sympati) + 1
 
-experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   ggplot(aes(x = sympati)) +
   geom_bar(aes(fill = treatment, y = ((after_stat(count))/sum(after_stat(count)))*4)) +
   xlim(0, 6) +
@@ -128,7 +128,7 @@ experiment_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
 experiment_plot
 
 ## Plot sympathy for control group
-control_plot <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+control_plot <- surveydata %>% mutate(sympati = sympati + 3) %>%
   ggplot(aes(x = sympati)) +
   geom_bar(aes(y = ((after_stat(count))/sum(after_stat(count))))) +
   xlim(0, 6) +
@@ -149,9 +149,9 @@ grid <- plot_grid(control_plot, experiment_plot)
 grid
 
 # ggdraw(add_sub(grid, "Sympati", vpadding = grid::unit(0,"lines"), y = 6, x = 0.5, vjust = 4.5))
-ggsave(filename = "./private/graph.png", dpi = "print", width = 15, height = 7.5)
+ggsave(filename = "./private/func-graph.png", dpi = "print", width = 15, height = 7.5)
 
-# boxgraph <- surveydata %>% mutate(sympati = sympati + 3) %>% 
+# boxgraph <- surveydata %>% mutate(sympati = sympati + 3) %>%
 #   ggplot(aes(x = sympati, fill = treatment)) +
 #   geom_boxplot() +
 #   facet_grid(econ_pol~job) +
