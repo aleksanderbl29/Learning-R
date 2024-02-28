@@ -1,0 +1,48 @@
+```{r}
+library(tidyverse)
+
+flights <- nycflights13::flights
+```
+
+```{r}
+flightssubset <- flights %>% 
+  select(year:sched_dep_time) %>% 
+  slice(1:3, .by = month) %>% 
+  arrange(month)
+```
+
+```{r}
+flightssubset %>% 
+  mutate(date = make_date(year = year, month = month, day = day),
+         day_of_year = yday(date),
+         day_of_month = mday(date),
+         day_of_week = wday(date),
+         week_of_year = week(date)) %>% 
+  select(-c(year, month, day))
+```
+
+# Laver heatmap over afgange
+
+```{r}
+counts <- flights %>% 
+  mutate(date = make_date(year = year, month = month, day = day),
+         day_of_year = yday(date),
+         day_of_month = mday(date),
+         day_of_week = wday(date),
+         week_of_year = week(date)) %>% 
+  count(week_of_year, day_of_week)
+
+counts %>% ggplot(aes(x = week_of_year, y = day_of_week, fill = n)) +
+  geom_tile(col = 'white') +
+  theme_minimal(base_line_size = 16) +
+  coord_equal() +
+  scale_fill_gradient(high = 'green', low = 'red') +
+  labs(
+    y = element_blank(),
+    x = "Week",
+    fill = "Flights",
+    title = "Number of flights in NYC in 2013"
+  )
+```
+
+
