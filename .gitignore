@@ -8,5 +8,6 @@
 private/
 data/
 reproduction/
+reports/
 
 *response.json
