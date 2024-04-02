@@ -11,3 +11,4 @@ reproduction/
 reports/
 
 *response.json
+.env
