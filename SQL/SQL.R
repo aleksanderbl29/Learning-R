@@ -36,13 +36,3 @@ connec <- dbConnect(drv,
                    password = dsn_pwd)
 connec
 
-
-
-con <- dbCanConnect(RPostgreSQL::PostgreSQL(),
-                    host = dsn_hostname,
-                    dbname = dsn_database,
-                    port = dsn_port,
-                    user = dsn_uid,
-                    password = dsn_pwd)
-
-con
