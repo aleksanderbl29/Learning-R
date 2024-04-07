@@ -33,3 +33,27 @@ colnames(api_data)
 head(api_data)
 
 
+#################
+###### DST ######
+#################
+
+library(httr)
+library(jsonlite)
+
+res <- GET("https://api.statbank.dk/v1/data/LABY06/JSONSTAT?KOMGRP=*&Tid=*")
+
+res
+
+rawToChar(res$content)
+
+laby06 = fromJSON(rawToChar(res$content))
+laby06
+
+names(laby06)
+
+
+GET_api_csv <- GET("https://api.statbank.dk/v1/data/LABY06/CSV?KOMGRP=*&Tid=*")
+write.csv2(GET_api_csv)
+
+GET_api_csv
+csv <- read.csv2(GET_api_csv)
