@@ -1,2 +1,5 @@
 source("renv/activate.R")
-source("~/.Rprofile")
+
+if (interactive()) {
+  source("~/.Rprofile")
+}
