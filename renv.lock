@@ -224,6 +224,16 @@
       ],
       "Hash": "cad6cf7f1d5f6e906700b9d3e718c796"
     },
+    "assertthat": {
+      "Package": "assertthat",
+      "Version": "0.2.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "tools"
+      ],
+      "Hash": "50c838a310445e954bc13f26f26a6ecf"
+    },
     "backports": {
       "Package": "backports",
       "Version": "1.4.1",
@@ -466,6 +476,26 @@
         "utils"
       ],
       "Hash": "3f038e5ac7f41d4ac41ce658c85e3042"
+    },
+    "coefplot": {
+      "Package": "coefplot",
+      "Version": "1.2.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "dplyr",
+        "dygraphs",
+        "ggplot2",
+        "magrittr",
+        "plotly",
+        "plyr",
+        "purrr",
+        "reshape2",
+        "stats",
+        "tibble",
+        "useful"
+      ],
+      "Hash": "08c3560669c50f0a7f2b9e1524860ea2"
     },
     "colorspace": {
       "Package": "colorspace",
@@ -726,6 +756,21 @@
         "vctrs"
       ],
       "Hash": "54ed3ea01b11e81a86544faaecfef8e2"
+    },
+    "dygraphs": {
+      "Package": "dygraphs",
+      "Version": "1.1.1.6",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "htmltools",
+        "htmlwidgets",
+        "magrittr",
+        "xts",
+        "zoo"
+      ],
+      "Hash": "716869fffc16e282c118f8894e082a7d"
     },
     "ellipsis": {
       "Package": "ellipsis",
@@ -1428,6 +1473,22 @@
       ],
       "Hash": "42bd7756c83b818fb7742bd992fa39bd"
     },
+    "margins": {
+      "Package": "margins",
+      "Version": "0.3.27",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "MASS",
+        "data.table",
+        "grDevices",
+        "graphics",
+        "prediction",
+        "stats",
+        "utils"
+      ],
+      "Hash": "6d1fdf967b5249e7dde2a5f2be627317"
+    },
     "markdown": {
       "Package": "markdown",
       "Version": "1.12",
@@ -1696,6 +1757,38 @@
       ],
       "Hash": "876c618df5ae610be84356d5d7a5d124"
     },
+    "plotly": {
+      "Package": "plotly",
+      "Version": "4.10.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "RColorBrewer",
+        "base64enc",
+        "crosstalk",
+        "data.table",
+        "digest",
+        "dplyr",
+        "ggplot2",
+        "htmltools",
+        "htmlwidgets",
+        "httr",
+        "jsonlite",
+        "lazyeval",
+        "magrittr",
+        "promises",
+        "purrr",
+        "rlang",
+        "scales",
+        "tibble",
+        "tidyr",
+        "tools",
+        "vctrs",
+        "viridisLite"
+      ],
+      "Hash": "a1ac5c03ad5ad12b9d1597e00e23c3dd"
+    },
     "plyr": {
       "Package": "plyr",
       "Version": "1.8.9",
@@ -1713,6 +1806,19 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "a555924add98c99d2f411e37e7d25e9f"
+    },
+    "prediction": {
+      "Package": "prediction",
+      "Version": "0.3.18",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "data.table",
+        "stats",
+        "utils"
+      ],
+      "Hash": "7707b2d09f30c9458d48c54b953c1e9e"
     },
     "prettyunits": {
       "Package": "prettyunits",
@@ -1943,6 +2049,19 @@
         "withr"
       ],
       "Hash": "1425f91b4d5d9a8f25352c44a3d914ed"
+    },
+    "reshape2": {
+      "Package": "reshape2",
+      "Version": "1.4.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "Rcpp",
+        "plyr",
+        "stringr"
+      ],
+      "Hash": "bb5996d0bd962d214a11140d77589917"
     },
     "rlang": {
       "Package": "rlang",
@@ -2383,6 +2502,25 @@
       ],
       "Hash": "f561504ec2897f4d46f0c7657e488ae1"
     },
+    "useful": {
+      "Package": "useful",
+      "Version": "1.2.6.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "Matrix",
+        "assertthat",
+        "dplyr",
+        "ggplot2",
+        "magrittr",
+        "plyr",
+        "purrr",
+        "scales",
+        "stats",
+        "utils"
+      ],
+      "Hash": "2e76a6230fd4a81383ee91569c04e757"
+    },
     "utf8": {
       "Package": "utf8",
       "Version": "1.2.4",
@@ -2507,6 +2645,18 @@
         "rlang"
       ],
       "Hash": "1d0336142f4cd25d8d23cd3ba7a8fb61"
+    },
+    "xts": {
+      "Package": "xts",
+      "Version": "0.14.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods",
+        "zoo"
+      ],
+      "Hash": "288bc0fd02bb4e1489f37831d8803b2b"
     },
     "yaml": {
       "Package": "yaml",
